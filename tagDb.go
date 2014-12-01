@@ -23,9 +23,8 @@ func NewTagDB(db *bolt.DB) *TagDB {
 		}
 		return nil
 	})
-	t := TagDB{db}
 
-	return &t
+	return &TagDB{db}
 }
 
 func getTagId() inode {
