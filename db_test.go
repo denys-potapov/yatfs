@@ -24,8 +24,16 @@ func withDB(t testing.TB, fn func(*bolt.DB)) {
 	fn(db)
 }
 
-func TestNewTagDB(t *testing.T) {
+func TestInitDB(t *testing.T) {
 	withDB(t, func(db *bolt.DB) {
-		_ = NewTagDB(db)
+		_ = InitDB(db)
+	})
+}
+
+func TestAddInode(t *testing.T) {
+	withDB(t, func(db *bolt.DB) {
+		d := InitDB(db)
+		d.addInode("test")
+
 	})
 }
