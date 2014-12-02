@@ -8,12 +8,19 @@ import (
 
 type Inode fuse.NodeID
 
-type DB struct {
-	*bolt.DB
+func (inode Inode) Bytes() []byte {
+	bytes := make([]byte, 8, 8)
+	binary.PutUvarint(bytes, uint64(inode))
+	return bytes
 }
 
-type Tx struct {
-	*bolt.Tx
+func NewInode(bytes []byte) Inode {
+	inode, _ = binary.Uvarint(bytes)
+	return inode
+}
+
+type DB struct {
+	*bolt.DB
 }
 
 func InitDB(db *bolt.DB) *DB {
@@ -31,28 +38,9 @@ func InitDB(db *bolt.DB) *DB {
 	return &DB{db}
 }
 
-func (inode Inode) Bytes() []byte {
-	bytes := make([]byte, 8, 8)
-	binary.PutUvarint(bytes, uint64(inode))
-	return bytes
-}
-
 // wrap bolt transaction
 func (db *DB) Update(fn func(*Tx) error) error {
 	return db.DB.Update(func(tx *bolt.Tx) error {
 		return fn(&Tx{tx})
 	})
-}
-
-func (db *DB) addInode(value string) (Inode, error) {
-	var inode Inode
-	err := db.Update(func(tx *Tx) error {
-		b := tx.Bucket([]byte("inodes"))
-		s, _ := b.NextSequence()
-		inode := Inode(s)
-		b.Put(inode.Bytes(), []byte(value))
-		return nil
-	})
-
-	return inode, err
 }
