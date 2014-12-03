@@ -5,6 +5,12 @@ import (
 	"testing"
 )
 
+func TestOrderTags(t *testing.T) {
+	tags := OrderTags([]string{"a", "b", "c"})
+	if tags["a"] != 255 || tags["b"] != 127 || tags["c"] != 0 {
+		t.Errorf("OrderIncorrect %v", tags)
+	}
+}
 func TestSplitPath(t *testing.T) {
 	path := "/Red/round.Apple"
 	parts := SplitPath(path)
