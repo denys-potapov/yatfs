@@ -18,7 +18,7 @@ func withTx(t *testing.T, fn func(*Tx)) {
 
 func TestAddTag(t *testing.T) {
 	withTx(t, func(tx *Tx) {
-		inode, _ := tx.AddTag("tag")
+		inode := tx.AddTag("tag")
 
 		i := tx.Bucket([]byte("inodes"))
 		if g, e := string(i.Get(inode)), "tag"; g != e {

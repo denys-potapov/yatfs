@@ -1,21 +1,16 @@
 package main
 
 import (
-	"bazil.org/fuse"
 	"encoding/binary"
 	"github.com/boltdb/bolt"
 )
 
-type Inode fuse.NodeID
+type Inode []byte
 
-func (inode Inode) Bytes() []byte {
-	bytes := make([]byte, 8, 8)
-	binary.PutUvarint(bytes, uint64(inode))
-	return bytes
-}
+func NewInode(i uint64) Inode {
+	inode := make([]byte, 8)
+	binary.PutUvarint(inode, uint64(i))
 
-func NewInode(bytes []byte) Inode {
-	inode, _ = binary.Uvarint(bytes)
 	return inode
 }
 
@@ -39,7 +34,7 @@ func InitDB(db *bolt.DB) *DB {
 }
 
 // wrap bolt transaction
-func (db *DB) Update(fn func(*Tx) error) error {
+func (db *DB) update(fn func(*Tx) error) error {
 	return db.DB.Update(func(tx *bolt.Tx) error {
 		return fn(&Tx{tx})
 	})

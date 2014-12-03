@@ -20,12 +20,12 @@ func (tx *Tx) addInode(value string) Inode {
 	return inode
 }
 
-func (tx *Tx) AddTag(name string) (Inode, error) {
+func (tx *Tx) AddTag(name string) Inode {
 	inode := tx.addInode(name)
 	b := tx.Bucket([]byte("tags"))
-	err := b.Put([]byte(name), inode)
+	b.Put([]byte(name), inode)
 
-	return inode, err
+	return inode
 }
 
 func (tx *Tx) FindTag(name string) Inode {

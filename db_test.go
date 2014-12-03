@@ -7,7 +7,7 @@ import (
 	"testing"
 )
 
-func withDB(t testing.TB, fn func(*bolt.DB)) {
+func withDB(t *testing.T, fn func(*bolt.DB)) {
 	tmp, err := ioutil.TempFile("", "yatfs-test-")
 	if err != nil {
 		t.Fatal(err)
@@ -27,13 +27,14 @@ func withDB(t testing.TB, fn func(*bolt.DB)) {
 func TestInitDB(t *testing.T) {
 	withDB(t, func(db *bolt.DB) {
 		_ = InitDB(db)
-	})
-}
 
-func TestAddInode(t *testing.T) {
-	withDB(t, func(db *bolt.DB) {
-		d := InitDB(db)
-		d.addInode("test")
-
+		db.View(func(tx *bolt.Tx) error {
+			for _, name := range []string{"tags", "inodes", "relations"} {
+				if tx.Bucket([]byte(name)) == nil {
+					t.Errorf("no %s bucket", name)
+				}
+			}
+			return nil
+		})
 	})
 }
