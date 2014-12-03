@@ -50,6 +50,6 @@ func (tx *Tx) AddRelation(file Inode, tag Inode, weight byte) error {
 	if err != nil {
 		return err
 	}
-	err = tx.addRelation(tag, file, weight)
-	return err
+
+	return tx.addRelation(tag, file, weight)
 }

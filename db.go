@@ -7,6 +7,8 @@ import (
 
 type Inode []byte
 
+type Inodes []Inode
+
 func NewInode(i uint64) Inode {
 	inode := make([]byte, 8)
 	binary.PutUvarint(inode, uint64(i))
@@ -54,4 +56,8 @@ func (db *DB) AddFile(tags OrderedTags, path string) error {
 
 		return nil
 	})
+}
+
+func (db *DB) GetFiles(tags Tags, path string) Inodes {
+	t := tagsToInodes
 }

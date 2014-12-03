@@ -4,9 +4,11 @@ import (
 	"strings"
 )
 
+type Tags []string
+
 type OrderedTags map[string]byte
 
-func OrderTags(tags []string) OrderedTags {
+func OrderTags(Tags) OrderedTags {
 	t := make(OrderedTags)
 	for i, tag := range tags {
 		weight := (len(tags) - 1 - i) * 255 / (len(tags) - 1)
