@@ -39,3 +39,19 @@ func (db *DB) update(fn func(*Tx) error) error {
 		return fn(&Tx{tx})
 	})
 }
+
+func (db *DB) AddFile(tags OrderedTags, path string) error {
+	return db.update(func(tx *Tx) error {
+		file := tx.AddInode(path)
+		for t, w := range tags {
+			tag := tx.FindTag(t)
+			if tag == nil {
+				tag = tx.AddTag(t)
+			}
+
+			tx.AddRelation(file, tag, w)
+		}
+
+		return nil
+	})
+}

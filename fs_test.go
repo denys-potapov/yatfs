@@ -11,6 +11,7 @@ func TestOrderTags(t *testing.T) {
 		t.Errorf("OrderIncorrect %v", tags)
 	}
 }
+
 func TestSplitPath(t *testing.T) {
 	path := "/Red/round.Apple"
 	parts := SplitPath(path)

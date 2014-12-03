@@ -8,7 +8,7 @@ type Tx struct {
 	*bolt.Tx
 }
 
-func (tx *Tx) addInode(value string) Inode {
+func (tx *Tx) AddInode(value string) Inode {
 	b := tx.Bucket([]byte("inodes"))
 	i, err := b.NextSequence()
 	if err != nil {
@@ -21,7 +21,7 @@ func (tx *Tx) addInode(value string) Inode {
 }
 
 func (tx *Tx) AddTag(name string) Inode {
-	inode := tx.addInode(name)
+	inode := tx.AddInode(name)
 	b := tx.Bucket([]byte("tags"))
 	b.Put([]byte(name), inode)
 

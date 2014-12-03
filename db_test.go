@@ -38,3 +38,10 @@ func TestInitDB(t *testing.T) {
 		})
 	})
 }
+
+func TestAddFile(t *testing.T) {
+	withDB(t, func(db *bolt.DB) {
+		d := InitDB(db)
+		d.AddFile(OrderedTags{"a": 255, "b": 0}, "path")
+	})
+}
