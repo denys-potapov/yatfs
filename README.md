@@ -1,4 +1,4 @@
-Yet another tagged filesystem
+Yet another tagable filesystem
 =============================
 
 Usage examples
@@ -31,6 +31,7 @@ either by document type (TODO: would it work like that(?)
 	foo.doc
 	bar.doc
 
+
 ### Todo tagging
 
 And now you want to tag documents for todo
@@ -46,7 +47,24 @@ Now you can list all the todo items
 
 ### Photos tagging
 
-TODO
+You copy your files to folder 
+
+	$ cp /media/canon photos/summer/2014
+
+and tag then	
+	
+	$ cd photos/summer/2014/
+	$ mv IMG1.jpeg i.dog.sea.jpeg
+	$ mv IMG2.jpeg sunset.jpeg
+	$ mv IMG3.jpeg i.beer.jpeg
+
+Now you can access them in different ways
+	
+	$ ls photos/sunset
+	summer.2014.jpeg
+	$ ls photos/2014/i
+	summer.beer.jpeg
+	summer.dog.sea.jpeg
 
 ### Torrent tagging
 
