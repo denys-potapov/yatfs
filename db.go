@@ -1,20 +1,8 @@
 package main
 
 import (
-	"encoding/binary"
 	"github.com/boltdb/bolt"
 )
-
-type Inode []byte
-
-type Inodes []Inode
-
-func NewInode(i uint64) Inode {
-	inode := make([]byte, 8)
-	binary.PutUvarint(inode, uint64(i))
-
-	return inode
-}
 
 type DB struct {
 	*bolt.DB
@@ -35,9 +23,16 @@ func InitDB(db *bolt.DB) *DB {
 	return &DB{db}
 }
 
-// wrap bolt transaction
+// wrap bolt update transaction
 func (db *DB) update(fn func(*Tx) error) error {
 	return db.DB.Update(func(tx *bolt.Tx) error {
+		return fn(&Tx{tx})
+	})
+}
+
+// wrap bolt view transaction
+func (db *DB) view(fn func(*Tx) error) error {
+	return db.DB.View(func(tx *bolt.Tx) error {
 		return fn(&Tx{tx})
 	})
 }
