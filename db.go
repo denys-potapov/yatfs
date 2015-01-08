@@ -7,7 +7,7 @@ import (
 
 type Inode []byte
 
-type Inodes []Inode
+type Inodes map[Inode]uint
 
 func NewInode(i uint64) Inode {
 	inode := make([]byte, 8)
@@ -35,9 +35,16 @@ func InitDB(db *bolt.DB) *DB {
 	return &DB{db}
 }
 
-// wrap bolt transaction
+// wrap bolt update transaction
 func (db *DB) update(fn func(*Tx) error) error {
 	return db.DB.Update(func(tx *bolt.Tx) error {
+		return fn(&Tx{tx})
+	})
+}
+
+// wrap bolt view transaction
+func (db *DB) view(fn func(*Tx) error) error {
+	return db.DB.View(func(tx *bolt.Tx) error {
 		return fn(&Tx{tx})
 	})
 }
@@ -58,6 +65,20 @@ func (db *DB) AddFile(tags OrderedTags, path string) error {
 	})
 }
 
-func (db *DB) GetFiles(tags Tags, path string) Inodes {
-	t := tagsToInodes
+func (db *DB) GetCommonTags(inodes Inode[]) OrderedTags {
+	var tags = make(OrderedTags)
+
+	err = db.view(func(tx *Tx) error {
+		t = map[Inode]uint
+		for _, i := range inodes {
+			b := tx.Bucket([]byte("inodes"))
+			
+		}
+	}
+	
+	if err != nil {
+		return nil
+	}
+
+	return 
 }
