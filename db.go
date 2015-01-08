@@ -53,6 +53,20 @@ func (db *DB) AddFile(tags OrderedTags, path string) error {
 	})
 }
 
-func (db *DB) GetFiles(tags Tags, path string) Inodes {
-	t := tagsToInodes
+func (db *DB) GetCommonTags(inodes Inode[]) OrderedTags {
+	var tags = make(OrderedTags)
+
+	err = db.view(func(tx *Tx) error {
+		t = map[Inode]uint
+		for _, i := range inodes {
+			b := tx.Bucket([]byte("inodes"))
+			
+		}
+	}
+	
+	if err != nil {
+		return nil
+	}
+
+	return 
 }
