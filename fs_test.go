@@ -13,9 +13,9 @@ func TestOrderTags(t *testing.T) {
 }
 
 func TestSplitPath(t *testing.T) {
-	path := "/Red/round.Apple"
+	path := "/Red/круглый.Apple"
 	parts := SplitPath(path)
-	if g, e := parts, []string{"red", "round", "apple"}; !reflect.DeepEqual(g, e) {
+	if g, e := parts, []string{"Red", "круглый", "Apple"}; !reflect.DeepEqual(g, e) {
 		t.Errorf("SplitIncorrect: %q != %q", g, e)
 	}
 }
