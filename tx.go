@@ -35,9 +35,10 @@ func (tx *Tx) FindTag(name string) Inode {
 	return inode
 }
 
-func (tx *Tx) getFiles() Inode {
+// func (tx *Tx) getFiles() Inode {
 	
-}
+// }
+
 func (tx *Tx) addRelation(i1 Inode, i2 Inode, weight byte) error {
 	b := tx.Bucket([]byte("relations"))
 	item, err := b.CreateBucketIfNotExists(i1)
